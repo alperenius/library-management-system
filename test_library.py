@@ -39,24 +39,25 @@ class TestLibrary:
     def test_add_book_manual(self, temp_library):
         """Manuel kitap ekleme testı."""
         book = Book("1984", "George Orwell", "978-0451524935")
-        
-        result = temp_library.add_book_manual(book)
-        
-        assert result is True
+
+        added_book = temp_library.add_book_manual(book)
+
+        assert added_book is not None
+        assert added_book == book
         assert len(temp_library.books) == 1
         assert temp_library.books[0] == book
-    
+
     def test_add_duplicate_book_manual(self, temp_library):
         """Aynı kitabı iki kez ekleme testı."""
         book = Book("1984", "George Orwell", "978-0451524935")
-        
+
         # İlk ekleme başarılı olmalı
         result1 = temp_library.add_book_manual(book)
-        assert result1 is True
-        
-        # İkinci ekleme başarısız olmalı
+        assert result1 is not None
+
+        # İkinci ekleme başarısız olmalı (None dönmeli)
         result2 = temp_library.add_book_manual(book)
-        assert result2 is False
+        assert result2 is None
         assert len(temp_library.books) == 1
     
     def test_remove_book(self, temp_library):
@@ -149,9 +150,9 @@ class TestLibrary:
         mock_client_instance.get.side_effect = [book_response, author_response]
         mock_client.return_value.__enter__.return_value = mock_client_instance
         
-        result = temp_library.add_book("978-0451524935")
+        added_book = temp_library.add_book("978-0451524935")
         
-        assert result is True
+        assert added_book is not None
         assert len(temp_library.books) == 1
         assert temp_library.books[0].title == "1984"
         assert temp_library.books[0].author == "George Orwell"
@@ -169,7 +170,7 @@ class TestLibrary:
         
         result = temp_library.add_book("978-0000000000")
         
-        assert result is False
+        assert result is None
         assert len(temp_library.books) == 0
     
     @patch('httpx.Client')
@@ -181,7 +182,7 @@ class TestLibrary:
         
         result = temp_library.add_book("978-0451524935")
         
-        assert result is False
+        assert result is None
         assert len(temp_library.books) == 0
     
     @patch('httpx.Client')
@@ -200,7 +201,7 @@ class TestLibrary:
         
         result = temp_library.add_book("978-0451524935")
         
-        assert result is True
+        assert result is not None
         assert len(temp_library.books) == 1
         assert temp_library.books[0].author == "Bilinmeyen Yazar"
     

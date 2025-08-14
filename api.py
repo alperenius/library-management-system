@@ -111,47 +111,39 @@ async def get_books():
 async def add_book(isbn_request: ISBNRequest):
     """
     Yeni bir kitap ekler.
-    
+
     Args:
         isbn_request (ISBNRequest): ISBN numarası içeren request body
-        
+
     Returns:
         BookResponse: Eklenen kitabın bilgileri
-        
+
     Raises:
-        HTTPException: Kitap eklenemezse 400 veya 404 hatası döner
+        HTTPException: Kitap zaten mevcutsa 400, bulunamazsa 404 hatası döner.
     """
     isbn = isbn_request.isbn.strip()
-    
+
     # Kitabın zaten var olup olmadığını kontrol et
-    existing_book = library.find_book(isbn)
-    if existing_book:
+    if library.find_book(isbn):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"ISBN {isbn} numaralı kitap zaten kütüphanede mevcut."
         )
-    
-    # Kitabı ekle
-    success = library.add_book(isbn)
-    
-    if not success:
+
+    # Kitabı eklemeyi dene
+    new_book = library.add_book(isbn)
+
+    if not new_book:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"ISBN {isbn} ile kitap bulunamadı veya API hatası oluştu."
+            detail=f"ISBN {isbn} ile Open Library'de kitap bulunamadı veya bir API hatası oluştu."
         )
-    
-    # Eklenen kitabı bul ve döndür
-    added_book = library.find_book(isbn)
-    if not added_book:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Kitap eklendi ancak tekrar bulunamadı."
-        )
-    
+
+    # Başarılı yanıtı döndür
     return BookResponse(
-        title=added_book.title,
-        author=added_book.author,
-        isbn=added_book.isbn
+        title=new_book.title,
+        author=new_book.author,
+        isbn=new_book.isbn
     )
 
 

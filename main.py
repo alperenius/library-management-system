@@ -27,42 +27,56 @@ def add_book(library: Library):
     """Kullanıcıdan ISBN alarak kitap ekler."""
     print("\n--- Kitap Ekleme ---")
     isbn = input("Kitabın ISBN numarasını girin: ").strip()
-    
+
     if not isbn:
         print("Hata: ISBN numarası boş olamaz.")
         return
-    
-    print("Kitap bilgileri getiriliyor...")
-    library.add_book(isbn)
+
+    print(f"ISBN {isbn} için kitap bilgileri Open Library API'sinden getiriliyor...")
+    new_book = library.add_book(isbn)
+
+    if new_book:
+        print(f"\nKitap başarıyla eklendi: {new_book}")
+    else:
+        print("\nHata: Kitap eklenemedi. ISBN numarasını kontrol edin veya daha sonra tekrar deneyin.")
 
 
 def remove_book(library: Library):
     """Kullanıcıdan ISBN alarak kitap siler."""
     print("\n--- Kitap Silme ---")
-    
-    # Önce mevcut kitapları göster
+
     if library.get_book_count() == 0:
         print("Kütüphanede silinecek kitap bulunmuyor.")
         return
     
-    library.list_books()
-    
+    # Önce mevcut kitapları göster
+    print("Mevcut Kitaplar:")
+    list_books(library)
+
     isbn = input("\nSilmek istediğiniz kitabın ISBN numarasını girin: ").strip()
-    
+
     if not isbn:
         print("Hata: ISBN numarası boş olamaz.")
         return
-    
-    library.remove_book(isbn)
+
+    if library.remove_book(isbn):
+        print("\nKitap başarıyla silindi.")
+    else:
+        print(f"\nHata: ISBN {isbn} numaralı kitap bulunamadı veya silinemedi.")
 
 
 def list_books(library: Library):
     """Kütüphanedeki tüm kitapları listeler."""
-    print("\n--- Kitap Listeleme ---")
     books = library.list_books()
-    
-    if books:
-        print(f"\nToplam {len(books)} kitap bulunuyor.")
+
+    if not books:
+        print("Kütüphanede hiç kitap bulunmuyor.")
+        return
+
+    for i, book in enumerate(books, 1):
+        print(f"{i}. {book}")
+    print("="*35)
+    print(f"Toplam {len(books)} kitap bulunuyor.")
 
 
 def search_book(library: Library):
@@ -112,6 +126,7 @@ def main():
             elif choice == "2":
                 remove_book(library)
             elif choice == "3":
+                print("\n--- Kitap Listeleme ---")
                 list_books(library)
             elif choice == "4":
                 search_book(library)
