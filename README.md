@@ -175,20 +175,6 @@ library-management-system/
 - **Error Handling**: Kapsamlı hata yönetimi
 - **Input Validation**: Pydantic ile veri doğrulama
 
-## 🚧 Bilinen Kısıtlamalar
-
-- Open Library API bazen yavaş yanıt verebilir
-- ISBN formatı kontrolü basit seviyede
-- Tek kullanıcılı sistem (çoklu kullanıcı desteği yok)
-- Dosya tabanlı veri saklama (veritabanı yok)
-
-## 🤝 Katkıda Bulunma
-
-1. Fork yapın
-2. Feature branch oluşturun (`git checkout -b feature/amazing-feature`)
-3. Değişikliklerinizi commit edin (`git commit -m 'Add some amazing feature'`)
-4. Branch'i push edin (`git push origin feature/amazing-feature`)
-5. Pull Request oluşturun
 
 ## 📄 Lisans
 
@@ -196,10 +182,8 @@ Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için `LICENSE` dosy
 
 ## 📞 İletişim
 
-Proje Sahibi - [GitHub Profili](https://github.com/kullanici-adi)
+Proje Sahibi - [GitHub Profili](https://github.com/alperenius)
 
-Proje Linki: [https://github.com/kullanici-adi/library-management-system](https://github.com/kullanici-adi/library-management-system)
+Proje Linki: [https://github.com/kullanici-adi/library-management-system](https://github.com/alperenius/library-management-system)
 
 ---
-
-**Not**: Bu proje Python 202 Bootcamp'i kapsamında eğitim amaçlı geliştirilmiştir.
